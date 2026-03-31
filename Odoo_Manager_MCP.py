@@ -141,5 +141,25 @@ def update_product_quantity(
         file_handler.flush()
         return error_msg        
 # تشغيل الخادم
+# if __name__ == "__main__":
+#     mcp.run(transport="sse")
+
+# في نهاية الملف
+from starlette.applications import Starlette
+
+# 1. بناء تطبيق Starlette المتوافق مع MCP
+app = mcp.build_app()
+
 if __name__ == "__main__":
-    mcp.run(transport="sse")
+    import uvicorn
+    import os
+    
+    # 2. قراءة الإعدادات من البيئة أو استخدام القيم الافتراضية للـ Docker
+    # نستخدم 0.0.0.0 لضمان الخروج من الحاوية للويندوز
+    host = os.getenv("MCP_HOST", "0.0.0.0") 
+    port = int(os.getenv("MCP_PORT", "8000"))
+    
+    logger.info(f"جاري تشغيل السيرفر على {host}:{port}")
+    
+    # 3. تشغيل المحرك يدوياً
+    uvicorn.run(app, host=host, port=port)
