@@ -142,4 +142,4 @@ def update_product_quantity(
         return error_msg        
 # تشغيل الخادم
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="sse")
